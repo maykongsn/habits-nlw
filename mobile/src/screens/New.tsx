@@ -32,7 +32,7 @@ export function New() {
                     Qual seu comprometimento?
                 </Text>
                 <TextInput 
-                    className="h-12 pl-4 rounded-lg mt-3 bg-zinc-800 text-white focus:border-2 focus:border-violet-500"
+                    className="h-12 pl-4 rounded-lg mt-3 bg-zinc-900 text-white border-2 border-zinc-800 focus:border-violet-500"
                     placeholder="Exercícios, dormir bem, etc..."
                     placeholderTextColor={colors.zinc[400]}
                 />
