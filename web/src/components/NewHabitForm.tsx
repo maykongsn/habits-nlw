@@ -1,6 +1,7 @@
 import * as Checkbox from "@radix-ui/react-checkbox";
 import { Check } from "phosphor-react";
 import { FormEvent, useState } from "react";
+import { api } from "../lib/axios";
 
 const avaiableWeekDays = ['Domingo', 'Segunda-feira', 'Terça-feira', 'Quarta-feira', 'Quinta-feira', 'Sexta-feira', 'Sábado'];
 
@@ -8,11 +9,23 @@ export function NewHabitForm() {
     const [title, setTitle] = useState("");
     const [weekDays, setWeekDays] = useState<number[]>([]);
 
-    function createNewHabit(event: FormEvent) {
+    async function createNewHabit(event: FormEvent) {
         event.preventDefault();
 
-        console.log(title, weekDays)
+        if(!title || weekDays.length === 0) {
+            alert('Selecione o(s) dia(s) da semana para o hábito');
+            return;
+        }
 
+        await api.post('habits', {
+            title,
+            weekDays,
+        })
+
+        setTitle('');
+        setWeekDays([]);
+        
+        alert('Hábito criado com sucesso');
     }
 
     function handleToggleWeekDay(weekDay: number) {
@@ -34,6 +47,7 @@ export function NewHabitForm() {
                 placeholder="ex.: Exercícios, dormir bem, etc..."
                 className="p-4 rounded-lg mt-3 bg-zinc-800 text-white placeholder:text-zinc-400"
                 autoFocus
+                value={title}
                 onChange={event => setTitle(event.target.value)}
             />
             <label htmlFor="" className="font-semibold leading-tight mt-4">Qual a recorrência?</label>
@@ -43,6 +57,7 @@ export function NewHabitForm() {
                         <Checkbox.Root 
                             key={weekDay} 
                             className="flex items-center gap-3 group"
+                            checked={weekDays.includes(index)}
                             onCheckedChange={() => handleToggleWeekDay(index)}
                         >
                             <div className="h-8 w-8 rounded-lg flex items-center justify-center bg-zinc-900 border-2 border-zinc-800 group-data-[state=checked]:bg-green-500 group-data-[state=checked]:border-green-500">
